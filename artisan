@@ -1,0 +1,20 @@
+#!/usr/bin/env php
+<?php
+
+use Illuminate\Container\Container;
+use Illuminate\Events\Dispatcher;
+use Illuminate\Console\Application;
+use Ypho\Hashing\Commands\BruteForce;
+
+require __DIR__.'/vendor/autoload.php';
+
+$container = new Container();
+$events = new Dispatcher($container);
+
+$artisan = new Application($container, $events, 'v1');
+$artisan->setName('Hashing Console');
+
+// Bind commands
+$artisan->resolve(BruteForce::class);
+
+$artisan->run();
