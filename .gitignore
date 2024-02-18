@@ -1,7 +1,0 @@
-.phpunit.cache
-.phpunit.result.cache
-/storage/logs/*
-/storage/phpunit/*
-/resources/passwords/*
-/vendor
-/.idea
