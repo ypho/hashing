@@ -11,6 +11,8 @@ After the container is built, install all dependencies using: `docker compose ex
 ## Using the tool
 When the Docker containers are running, and the dependencies are installed, you can run the different commands with: `docker compose exec -ti hashing php artisan [command]`
 
+Make sure you add your password files to `resources/passwords` so they can be read.
+
 ### Running Tests & Code Quality
 When PhpStorm is set up correctly, you can run the tests through Docker. To run them manually, use: `docker compose exec -ti hashing vendor/bin/phpunit`
 

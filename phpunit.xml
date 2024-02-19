@@ -4,7 +4,7 @@
          bootstrap="vendor/autoload.php" colors="true" cacheDirectory=".phpunit.cache">
     <coverage>
         <report>
-            <html outputDirectory="storage/phpunit/coverage/html"/>
+            <html outputDirectory="logs/phpunit/coverage/html"/>
         </report>
     </coverage>
     <testsuites>
