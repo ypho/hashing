@@ -37,7 +37,7 @@ class BruteForce extends Command
         }
 
         $foundFiles = scandir(__DIR__ . '/../../resources/passwords');
-        array_splice($foundFiles, 0, 3);
+        array_splice($foundFiles, 0, 4);
 
         if (count($foundFiles) === 0) {
             $this->error('Please place your password files in the resources/passwords directory.');
