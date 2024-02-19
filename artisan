@@ -1,10 +1,11 @@
 #!/usr/bin/env php
 <?php
 
+use Illuminate\Console\Application;
 use Illuminate\Container\Container;
 use Illuminate\Events\Dispatcher;
-use Illuminate\Console\Application;
-use Ypho\Hashing\Commands\BruteForce;
+use Ypho\Hashing\Commands\BruteForce\Bcrypt;
+use Ypho\Hashing\Commands\BruteForce\WeakAlgorithms;
 
 require __DIR__.'/vendor/autoload.php';
 
@@ -15,6 +16,7 @@ $artisan = new Application($container, $events, 'v1');
 $artisan->setName('Hashing Console');
 
 // Bind commands
-$artisan->resolve(BruteForce::class);
+$artisan->resolve(WeakAlgorithms::class);
+$artisan->resolve(Bcrypt::class);
 
 $artisan->run();

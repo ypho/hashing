@@ -1,6 +1,6 @@
 <?php
 
-namespace Ypho\Hashing\Commands;
+namespace Ypho\Hashing\Commands\BruteForce;
 
 use Illuminate\Console\Command;
 
@@ -13,9 +13,9 @@ use Illuminate\Console\Command;
  * bcrypt (4): $2y$04$ZyC9sPVgPZmaDJ5DMeJa2OjHMDmIU7DBuPa1/22ImqfLZl5F5r/Ni
  * bcrypt (5): $2y$05$9u6g74sGBXQ0egYvojKJUeAQZQtZFiTHy7g8BPWHXTXTpylPuBiti
  */
-class BruteForce extends Command
+class WeakAlgorithms extends BruteForceCommand
 {
-    protected $signature = 'hash:weak:bruteforce {hash}';
+    protected $signature = 'hash:bruteforce:weak {hash}';
     protected $description = 'Brute forces a given hash against a password file (md5/sha1/sha2)';
 
     public function handle(): int
@@ -36,17 +36,10 @@ class BruteForce extends Command
             return 1;
         }
 
-        $foundFiles = scandir(__DIR__ . '/../../resources/passwords');
-        array_splice($foundFiles, 0, 4);
-
-        if (count($foundFiles) === 0) {
-            $this->error('Please place your password files in the resources/passwords directory.');
-            return 1;
-        }
-
-        // Choose the password file to use
+        $foundFiles = $this->getPasswordFiles();
         $passwordFile = $this->choice('Which password file should we use for this brute force check?', $foundFiles);
         $fileHandle = fopen(__DIR__ . '/../../resources/passwords/' . $passwordFile, 'r');
+
 
         $start = microtime(true);
         $lineNumber = 0;
