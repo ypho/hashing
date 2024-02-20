@@ -4,15 +4,6 @@ namespace Ypho\Hashing\Commands\BruteForce;
 
 use Illuminate\Console\Command;
 
-/**
- * Example hashes (jacksparrow):
- * md5: d34f9f73de4e49c41bb8cb5ae0a156c3
- * sha1: 6badb3b0c6dcaf1eaee39242535c95f4c5da433b
- * sha256: dadf168d689ccb73f9ff60eaa655070341f829b1 a79c927b1921b909179cbc19
- * bcrypt (default 10): $2y$10$UaBenFFoGVwwur.6A0LafO3wifmnfNrYCgqm2NOSi1RwSg3DUyLN.
- * bcrypt (4): $2y$04$ZyC9sPVgPZmaDJ5DMeJa2OjHMDmIU7DBuPa1/22ImqfLZl5F5r/Ni
- * bcrypt (5): $2y$05$9u6g74sGBXQ0egYvojKJUeAQZQtZFiTHy7g8BPWHXTXTpylPuBiti
- */
 class WeakAlgorithms extends BruteForceCommand
 {
     protected $signature = 'hash:bruteforce:weak {hash}';
@@ -38,7 +29,7 @@ class WeakAlgorithms extends BruteForceCommand
 
         $foundFiles = $this->getPasswordFiles();
         $passwordFile = $this->choice('Which password file should we use for this brute force check?', $foundFiles);
-        $fileHandle = fopen(__DIR__ . '/../../resources/passwords/' . $passwordFile, 'r');
+        $fileHandle = fopen(__DIR__ . '/../../../resources/passwords/' . $passwordFile, 'r');
 
 
         $start = microtime(true);
