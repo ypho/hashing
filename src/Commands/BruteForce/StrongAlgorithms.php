@@ -2,11 +2,11 @@
 
 namespace Ypho\Hashing\Commands\BruteForce;
 
-use Throwable;
+use Ypho\Hashing\Commands\BaseCommand;
 
-class Bcrypt extends BruteForceCommand
+class StrongAlgorithms extends BaseCommand
 {
-    protected $signature = 'hash:bruteforce:bcrypt {hash}';
+    protected $signature = 'hash:bruteforce:strong {hash}';
     protected $description = 'Brute forces a given mcrypt hash against a password file';
 
     public function handle(): int
@@ -14,13 +14,6 @@ class Bcrypt extends BruteForceCommand
         $this->warn('Brute forcing password hashes with mcrypt / blowfish');
 
         $hashedPassword = $this->argument('hash');
-
-        try {
-            $hashBreakdown = new \Ypho\Hashing\Algorithms\Bcrypt($hashedPassword);
-        } catch (Throwable $throwable) {
-            $this->error($throwable->getMessage());
-            return 1;
-        }
 
         $foundFiles = $this->getPasswordFiles();
         $passwordFile = $this->choice('Which password file should we use for this brute force check?', $foundFiles);
@@ -34,7 +27,7 @@ class Bcrypt extends BruteForceCommand
             $lineNumber++;
             $rawPassword = trim(fgets($fileHandle));
 
-            if (password_verify($rawPassword, $hashBreakdown->getFullHash()) === true) {
+            if (password_verify($rawPassword, $hashedPassword) === true) {
                 $timeElapsed = (int)((microtime(true) - $start) * 1000);
 
                 $this->info(sprintf('We found the hash in %dms after %d passwords! The password is: %s', $timeElapsed, $lineNumber, $rawPassword));

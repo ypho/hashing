@@ -2,6 +2,7 @@
 
 namespace Ypho\Hashing\Commands\Benchmark;
 
+use Throwable;
 use Ypho\Hashing\Commands\BaseCommand;
 
 class Sha1 extends BaseCommand

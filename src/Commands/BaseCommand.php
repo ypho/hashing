@@ -23,4 +23,19 @@ class BaseCommand extends Command
     {
         return $this->end - $this->start;
     }
+
+    /**
+     * @return array<string>
+     */
+    public function getPasswordFiles(): array
+    {
+        $foundFiles = scandir(__DIR__ . '/../../resources/passwords');
+        array_splice($foundFiles, 0, 4);
+
+        if (!$foundFiles) {
+            return [];
+        }
+
+        return $foundFiles;
+    }
 }

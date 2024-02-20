@@ -4,7 +4,12 @@
 use Illuminate\Console\Application;
 use Illuminate\Container\Container;
 use Illuminate\Events\Dispatcher;
-use Ypho\Hashing\Commands\BruteForce\Bcrypt;
+use Ypho\Hashing\Commands\Benchmark\Argon;
+use Ypho\Hashing\Commands\Benchmark\Bcrypt;
+use Ypho\Hashing\Commands\Benchmark\Md5;
+use Ypho\Hashing\Commands\Benchmark\Sha1;
+use Ypho\Hashing\Commands\Benchmark\Sha256;
+use Ypho\Hashing\Commands\BruteForce\StrongAlgorithms;
 use Ypho\Hashing\Commands\BruteForce\WeakAlgorithms;
 
 require __DIR__.'/vendor/autoload.php';
@@ -15,14 +20,15 @@ $events = new Dispatcher($container);
 $artisan = new Application($container, $events, 'v1');
 $artisan->setName('Hashing Console');
 
-// Bind commands
+// Brute force commands
 $artisan->resolve(WeakAlgorithms::class);
-$artisan->resolve(Bcrypt::class);
+$artisan->resolve(StrongAlgorithms::class);
 
-$artisan->resolve(\Ypho\Hashing\Commands\Benchmark\Md5::class);
-$artisan->resolve(\Ypho\Hashing\Commands\Benchmark\Sha1::class);
-$artisan->resolve(\Ypho\Hashing\Commands\Benchmark\Sha256::class);
-$artisan->resolve(\Ypho\Hashing\Commands\Benchmark\Bcrypt::class);
-$artisan->resolve(\Ypho\Hashing\Commands\Benchmark\Argon::class);
+// Benchmark commands
+$artisan->resolve(Md5::class);
+$artisan->resolve(Sha1::class);
+$artisan->resolve(Sha256::class);
+$artisan->resolve(Bcrypt::class);
+$artisan->resolve(Argon::class);
 
 $artisan->run();

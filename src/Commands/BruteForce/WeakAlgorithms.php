@@ -2,9 +2,9 @@
 
 namespace Ypho\Hashing\Commands\BruteForce;
 
-use Illuminate\Console\Command;
+use Ypho\Hashing\Commands\BaseCommand;
 
-class WeakAlgorithms extends BruteForceCommand
+class WeakAlgorithms extends BaseCommand
 {
     protected $signature = 'hash:bruteforce:weak {hash}';
     protected $description = 'Brute forces a given hash against a password file (md5/sha1/sha2)';
