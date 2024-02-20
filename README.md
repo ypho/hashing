@@ -71,6 +71,6 @@ For Argon, it is possible to allocate more resources into generating a password 
 
 ## Development
 ### Running Tests & Code Quality
-When PhpStorm is set up correctly, you can run the tests through Docker. To run them manually, use: `docker compose exec -ti hashing vendor/bin/phpunit`
+When PhpStorm is set up correctly, you can run the tests through Docker. To run them manually (including coverage), use: `docker compose exec -ti hashing vendor/bin/phpunit`
 
-When building further on this code (and maybe creating a PR?), you can run PHPStan for static analysis.
+When building further on this code (and maybe creating a PR?), you can run PHPStan for static analysis: `docker compose exec -ti hashing vendor/bin/phpstan`
