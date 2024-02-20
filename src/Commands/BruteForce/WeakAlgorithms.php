@@ -31,8 +31,7 @@ class WeakAlgorithms extends BaseCommand
         $passwordFile = $this->choice('Which password file should we use for this brute force check?', $foundFiles);
         $fileHandle = fopen(__DIR__ . '/../../../resources/passwords/' . $passwordFile, 'r');
 
-
-        $start = microtime(true);
+        $this->start();
         $lineNumber = 0;
 
         // Walk over each line and check against the hash
@@ -41,26 +40,19 @@ class WeakAlgorithms extends BaseCommand
 
             $rawPassword = trim(fgets($fileHandle));
 
-            if ($hashedPassword === $this->generateHash($algorithm, $rawPassword)) {
-                $timeElapsed = (int)((microtime(true) - $start) * 1000);
-
-                $this->info(sprintf('We found the hash in %dms after %d passwords! The password is: %s', $timeElapsed, $lineNumber, $rawPassword));
+            if ($hashedPassword === hash($algorithm, $rawPassword)) {
+                $this->end();
+                $this->info(sprintf('We found the hash in %dms after %d passwords! The password is: %s', $this->runtime(), $lineNumber, $rawPassword));
                 return 0;
             }
 
             if ($lineNumber % 1000000 === 0) {
-                $formattedLineNumber = sprintf('Passing %d million passwords, still going strong!', ($lineNumber / 1000000));
-                $this->info($formattedLineNumber);
+                $this->info(sprintf('Passing %d million passwords, still going strong!', ($lineNumber / 1000000)));
             }
         }
 
-        $timeElapsed = (int)((microtime(true) - $start) * 1000);
-        $this->warn(sprintf('We could not find your password. We tried %d passwords in time: %dms!', $lineNumber, $timeElapsed));
+        $this->end();
+        $this->warn(sprintf('We could not find your password. We tried %d passwords in time: %dms!', $lineNumber, $this->runtime()));
         return 0;
-    }
-
-    private function generateHash(string $algorithm, string $password): string
-    {
-        return hash($algorithm, $password);
     }
 }
