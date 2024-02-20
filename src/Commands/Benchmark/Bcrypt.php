@@ -27,12 +27,14 @@ class Bcrypt extends BaseCommand
                 );
             }
         } catch (Throwable $throwable) {
+            $this->error('Something went wrong while benchmarking');
             $this->error($throwable->getMessage());
             return 1;
         }
 
         $this->end();
-        $this->info(sprintf('Generated %d hashes in %dms.', $amount, $this->runtime()));
+        $this->info(sprintf('Generated %d hashes in %dms', $amount, $this->runtime()));
+        $this->info(sprintf('Allowed cost: %d', $cost));
 
         return 0;
     }

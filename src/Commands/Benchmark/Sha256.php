@@ -24,12 +24,13 @@ class Sha256 extends BaseCommand
                 hash('sha256', random_bytes(16));
             }
         } catch (Throwable $throwable) {
+            $this->error('Something went wrong while benchmarking');
             $this->error($throwable->getMessage());
             return 1;
         }
 
         $this->end();
-        $this->info(sprintf('Generated %d hashes in %dms.', $amount, $this->runtime()));
+        $this->info(sprintf('Generated %d hashes in %dms', $amount, $this->runtime()));
 
         return 0;
     }

@@ -7,7 +7,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Ypho\\Hashing\\": "tests/Aridia"
+            "Ypho\\Hashing\\": "tests/"
         }
     },
     "authors": [
