@@ -6,66 +6,104 @@ use Ypho\Hashing\BcryptException;
 
 class Blowfish
 {
-    const string IDENTIFIER = PASSWORD_BCRYPT;
-
-    private ?string $rawPassword;
     private string $hashedPassword;
-    private string $identifier = PASSWORD_BCRYPT;
     private int $cost;
-
     private string $salt;
     private string $hash;
 
-    static function createFromPasswordHash($hashedPassword)
+    /**
+     * @throws BcryptException
+     */
+    public function __construct(string $hash)
     {
+        $this->hashedPassword = $hash;
+        $this->preValidate();
+
         /**
          * explode() returns
          * [
          *  0 => ""
-         *  1 => "2y"
+         *  1 => "2y" // argon2i argon2id
          *  2 => "04"
          *  3 => "ZyC9sPVgPZmaDJ5DMeJa2OjHMDmIU7DBuPa1/22ImqfLZl5F5r/Ni"
          * ]
          * */
-        $hashParts = explode('$', $hashedPassword);
+        $hashParts = explode('$', $hash);
 
-        $blowfish = new self();
-        $blowfish->setHashedpassword($hashedPassword);
-        //$blowfish->identifier = $hashParts[1];
-        $blowfish->cost = $hashParts[2];
-        //$blowfish->salt = substr($hashParts[3], 0, 22);
-        //$blowfish->hash = substr($hashParts[3], -31);
+        $this->cost = $hashParts[2];
+        $this->salt = substr($hashParts[3], 0, 22);
+        $this->hash = substr($hashParts[3], -31);
 
+        // Do some final checks on the extracted information
+        $this->postValidate();
+    }
 
+    /**
+     * @throws BcryptException
+     */
+    static function createFromPasswordHash($hash): Blowfish
+    {
+        return new self($hash);
     }
 
     /**
      * @throws BcryptException
      */
     static function createFromRawPassword(
-        string $rawPassword,
-        int $cost = PASSWORD_BCRYPT_DEFAULT_COST,
+        string  $password,
+        int     $cost = PASSWORD_BCRYPT_DEFAULT_COST,
         ?string $salt = null
     ): Blowfish
     {
         /**
-         * Since password_hash() ignores any kind of salt, we use crypt() with a salt that is built
-         * as follows: $2y$XX%YYYYYYYYYYYYYYYYYYYYYY
+         * Since password_hash() ignores any kind of salt, we use crypt() if a salt is given, then we
+         * build the salt string as follows: $2y$XX%YYYYYYYYYYYYYYYYYYYYYY
          *
          * In this salt string:
-         * - XX stands for the cost, this is always a double-digit (between 04 and 31)
-         * - YYYY stands for the actual salt, this is a 22-character string
+         * - "2y" stands for the bcrypt Blowfish algorithm
+         * - "XX" stands for the cost, this is always a double-digit (between 04 and 31)
+         * - "YYYY..." stands for the actual salt, this is a 22-character string
+         *
+         * If no salt is given, we use the regular password_hash() method, which will generate
+         * its own random salt.
          */
-        $saltString = sprintf('$%s$%02d$%s', self::IDENTIFIER, $cost, $salt);
 
-        $hashedPassword = crypt($rawPassword, $saltString);
+        if ($salt === null) {
+            $hashedPassword = password_hash($password, PASSWORD_BCRYPT, ['cost' => $cost]);
+        } else {
+            $saltString = sprintf('$%s$%02d$%s', PASSWORD_BCRYPT, $cost, $salt);
+            $hashedPassword = crypt($password, $saltString);
+
+            if (password_verify($password, $hashedPassword) === false) {
+                throw new BcryptException('Your password is invalid, this can be either due to an invalid salt, or an invalid cost.');
+            }
+        }
+
         return new self($hashedPassword);
     }
 
     /**
      * @throws BcryptException
      */
-    private function validateHashedPassword(): void
+    private function preValidate(): void
+    {
+        if (strlen($this->hashedPassword) !== 60) {
+            throw new BcryptException('Your hash needs to be exactly 60 characters long');
+        }
+
+        if (substr_count($this->hashedPassword, '$') !== 3) {
+            throw new BcryptException('It looks like your hash is invalid');
+        }
+
+        if(str_starts_with($this->hashedPassword, '$2y$') === false) {
+            throw new BcryptException('It looks like you\'re not using the bcrypt / Blowfish algorithms');
+        }
+    }
+
+    /**
+     * @throws BcryptException
+     */
+    private function postValidate(): void
     {
         if ($this->cost < 4 || $this->cost > 31) {
             throw new BcryptException('The COST should be between 4 and 31');
@@ -74,7 +112,7 @@ class Blowfish
 
     public function getIdentifier(): string
     {
-        return $this->identifier;
+        return PASSWORD_BCRYPT;
     }
 
     public function getCost(): int
@@ -90,16 +128,5 @@ class Blowfish
     public function getHash(): string
     {
         return $this->hash;
-    }
-
-    public function setHashedpassword(string $hashedPassword)
-    {
-        $this->hashedPassword = $hashedPassword;
-    }
-
-    public function setCost(int $cost)
-    {
-        $this->cost = $cost;
-
     }
 }
