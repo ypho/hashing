@@ -11,6 +11,7 @@ use Ypho\Hashing\Commands\Benchmark\Sha1;
 use Ypho\Hashing\Commands\Benchmark\Sha256;
 use Ypho\Hashing\Commands\BruteForce\StrongAlgorithms;
 use Ypho\Hashing\Commands\BruteForce\WeakAlgorithms;
+use Ypho\Hashing\Commands\Generate;
 
 require __DIR__.'/vendor/autoload.php';
 
@@ -19,6 +20,9 @@ $events = new Dispatcher($container);
 
 $artisan = new Application($container, $events, 'v1');
 $artisan->setName('Hashing Console');
+
+// General commands
+$artisan->resolve(Generate::class);
 
 // Brute force commands
 $artisan->resolve(WeakAlgorithms::class);
