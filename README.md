@@ -121,3 +121,8 @@ When building further on this code (and maybe creating a PR?), you can run PHPSt
 ```shell
 docker compose exec -ti hashing vendor/bin/phpstan
 ```
+
+If you have `nektos/act` running locally, it is possible to check if the GitHub workflow passes, you can use the following command:
+```shell
+act -P ubuntu-latest=shivammathur/node:latest
+```
