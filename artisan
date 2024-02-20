@@ -19,4 +19,10 @@ $artisan->setName('Hashing Console');
 $artisan->resolve(WeakAlgorithms::class);
 $artisan->resolve(Bcrypt::class);
 
+$artisan->resolve(\Ypho\Hashing\Commands\Benchmark\Md5::class);
+$artisan->resolve(\Ypho\Hashing\Commands\Benchmark\Sha1::class);
+$artisan->resolve(\Ypho\Hashing\Commands\Benchmark\Sha256::class);
+$artisan->resolve(\Ypho\Hashing\Commands\Benchmark\Bcrypt::class);
+$artisan->resolve(\Ypho\Hashing\Commands\Benchmark\Argon::class);
+
 $artisan->run();
