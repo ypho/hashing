@@ -1,3 +1,8 @@
+![GitHub License](https://img.shields.io/github/license/ypho/hashing)
+![GitHub top language](https://img.shields.io/github/languages/top/ypho/hashing?color=%23A353AE)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/ypho/hashing/push.yml)
+![GitHub repo size](https://img.shields.io/github/repo-size/ypho/hashing)
+
 # Hashing
 ⚠️ **NOTE: THIS PROJECT IS FOR EDUCATIONAL USES ONLY. DO NOT USE THIS FOR MALPRACTICE, OR IN ANY KIND OF PRODUCTION ENVIRONMENT!**
 
