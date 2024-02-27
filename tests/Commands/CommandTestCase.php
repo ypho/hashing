@@ -3,9 +3,9 @@
 namespace Ypho\Hashing\Commands;
 
 use Illuminate\Console\Application;
-use Illuminate\Container\Container;
 use Illuminate\Events\Dispatcher;
 use PHPUnit\Framework\TestCase;
+use Ypho\Hashing\Container;
 
 class CommandTestCase extends TestCase
 {

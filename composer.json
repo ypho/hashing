@@ -18,12 +18,12 @@
     ],
     "require": {
         "php": "^8.3",
-        "illuminate/console": "^10.14",
-        "illuminate/events": "^10.14"
+        "illuminate/console": "^10.45",
+        "illuminate/events": "^10.45"
     },
     "require-dev": {
         "symfony/var-dumper": "^6.3",
-        "phpunit/phpunit": "^10.2",
+        "phpunit/phpunit": "^11.0",
         "phpstan/phpstan": "^1.10"
     },
     "scripts": {

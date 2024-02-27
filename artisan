@@ -2,7 +2,6 @@
 <?php
 
 use Illuminate\Console\Application;
-use Illuminate\Container\Container;
 use Illuminate\Events\Dispatcher;
 use Ypho\Hashing\Commands\Benchmark\Argon;
 use Ypho\Hashing\Commands\Benchmark\Bcrypt;
@@ -12,6 +11,7 @@ use Ypho\Hashing\Commands\Benchmark\Sha256;
 use Ypho\Hashing\Commands\BruteForce\StrongAlgorithms;
 use Ypho\Hashing\Commands\BruteForce\WeakAlgorithms;
 use Ypho\Hashing\Commands\Generate;
+use Ypho\Hashing\Container;
 
 require __DIR__.'/vendor/autoload.php';
 
