@@ -24,6 +24,11 @@ class BaseCommand extends Command
         return $this->end - $this->start;
     }
 
+    protected function lap(): int
+    {
+        return (int)(microtime(true) * 1000) - $this->start;
+    }
+
     /**
      * @return array<string>
      */
