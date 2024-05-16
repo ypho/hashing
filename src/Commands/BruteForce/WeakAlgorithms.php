@@ -19,6 +19,8 @@ class WeakAlgorithms extends BaseCommand
             32 => 'md5',
             40 => 'sha1',
             64 => 'sha256',
+            96 => 'sha384',
+            128 => 'sha512',
             default => null,
         };
 
