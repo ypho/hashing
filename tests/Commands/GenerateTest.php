@@ -24,7 +24,7 @@ class GenerateTest extends CommandTestCase
 
         $this->assertEquals(0, $tester->getStatusCode());
         $this->assertStringContainsString('Generating hashes for any given password', $output);
-        $this->assertStringContainsString('Generated 9 hashes', $output);
+        $this->assertStringContainsString('Generated 11 hashes for password: password', $output);
     }
 
     public function testGenerateCommandWithoutPasswordArgument()

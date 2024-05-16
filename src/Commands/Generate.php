@@ -37,17 +37,17 @@ class Generate extends BaseCommand
             $this->start();
             $hash = Bcrypt::createFromRawPassword(password: $rawPassword, cost: 4)->getFullHash();
             $this->end();
-            $this->info(sprintf('%s %s ms: %s', str_pad('Bcrypt (cost = 4)', 24), str_pad($this->runtime(), 4), $hash));
+            $this->info(sprintf('%s %s ms: %s', str_pad('Bcrypt (cost = 4)', 24), str_pad((string)$this->runtime(), 4), $hash));
 
             $this->start();
             $hash = Bcrypt::createFromRawPassword(password: $rawPassword)->getFullHash();
             $this->end();
-            $this->info(sprintf('%s %s ms: %s', str_pad('Bcrypt (default, 10)', 24), str_pad($this->runtime(), 4), $hash));
+            $this->info(sprintf('%s %s ms: %s', str_pad('Bcrypt (default, 10)', 24), str_pad((string)$this->runtime(), 4), $hash));
 
             $this->start();
             $hash = Bcrypt::createFromRawPassword(password: $rawPassword, cost: 16)->getFullHash();
             $this->end();
-            $this->info(sprintf('%s %s ms: %s', str_pad('Bcrypt (cost = 16)', 24), str_pad($this->runtime(), 4), $hash));
+            $this->info(sprintf('%s %s ms: %s', str_pad('Bcrypt (cost = 16)', 24), str_pad((string)$this->runtime(), 4), $hash));
 
             // ARGON
             $this->newLine();
@@ -56,17 +56,19 @@ class Generate extends BaseCommand
             $this->start();
             $hash = Argon::createFromRawPassword(password: $rawPassword)->getFullHash();
             $this->end();
-            $this->info(sprintf('%s %sms: %s', str_pad('Argon (default)', 24), str_pad($this->runtime(), 4), $hash));
+            $this->info(sprintf('%s %sms: %s', str_pad('Argon (default)', 24), str_pad((string)$this->runtime(), 4), $hash));
 
             $this->start();
             $hash = Argon::createFromRawPassword(password: $rawPassword, memoryCost: 3200)->getFullHash();
             $this->end();
-            $this->info(sprintf('%s %sms: %s', str_pad('Argon (less memory)', 24), str_pad($this->runtime(), 4), $hash));
+            $this->info(sprintf('%s %sms: %s', str_pad('Argon (less memory)', 24), str_pad((string)$this->runtime(), 4), $hash));
 
             $this->start();
             $hash = Argon::createFromRawPassword(password: $rawPassword, memoryCost: 256000)->getFullHash();
             $this->end();
-            $this->info(sprintf('%s %sms: %s', str_pad('Argon (more memory)', 24), str_pad($this->runtime(), 4), $hash));
+            $this->info(sprintf('%s %sms: %s', str_pad('Argon (more memory)', 24), str_pad((string)$this->runtime(), 4), $hash));
+
+            $this->comment(sprintf('Generated 11 hashes for password: %s', $rawPassword));
         } catch (Throwable $throwable) {
             $this->error('Something went wrong calculating your hashes.');
             $this->error($throwable->getMessage());
